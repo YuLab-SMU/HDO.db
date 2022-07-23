@@ -1,4 +1,4 @@
-packagedir <- ".//DOyulab.db"
+packagedir <- "./DOyulab.db"
 sqlite_path <- paste(packagedir, sep=.Platform$file.sep, "inst", "extdata")
 if(!dir.exists(sqlite_path)){dir.create(sqlite_path,recursive = TRUE)}
 dbfile <- file.path(sqlite_path, "DO.sqlite")
@@ -12,9 +12,7 @@ library(RSQLite)
 drv <- dbDriver("SQLite")
 db <- dbConnect(drv, dbname=dbfile)
 ## dbDisconnect(db)
-DOANCESTOR <- doancestor
-colnames(DOANCESTOR) <- c("doid", "ancestor")
-dbWriteTable(conn = db, "do_ancestor", DOANCESTOR, row.names=FALSE)
+
 
 ## DOTERM
 doobo <- parse_do("HumanDO.obo")
@@ -24,10 +22,35 @@ DOTERM <- doterm
 dbWriteTable(conn = db, "do_term", DOTERM, row.names=FALSE, overwrite = TRUE)
 
 
+
 ## DOPARENTS
 DOPARENTS <- doobo$rel
 colnames(DOPARENTS) <- c("doid", "parent")
 dbWriteTable(conn = db, "do_parents", DOPARENTS, row.names=FALSE)
+
+## DOANCESTOR
+ancestor_list <- split(DOPARENTS[, 2], DOPARENTS[, 1])
+getAncestor <- function(id) {
+    ans_temp <- which(DOPARENTS[, 1] %in% ancestor_list[[id]])
+    ids <- DOPARENTS[ans_temp, 2]
+    content <- c(ancestor_list[[id]], ids)
+    while(!all(is.na(ids))) {
+        ans_temp <- which(DOPARENTS[, 1] %in% ids)
+        ids <- DOPARENTS[ans_temp, 2]
+        content <- c(content, ids)
+    }
+    content[!is.na(content)]
+}
+
+for (id in names(ancestor_list)) {
+    ancestor_list[[id]] <- getAncestor(id)
+}
+ancestordf <- stack(ancestor_list)[, c(2, 1)]
+ancestordf[, 1] <- as.character(ancestordf[, 1])
+ancestordf <- unique(ancestordf)
+DOANCESTOR <- ancestordf
+colnames(DOANCESTOR) <- c("doid", "ancestor")
+dbWriteTable(conn = db, "do_ancestor", DOANCESTOR, row.names=FALSE)
 
 
 metadata <- metadata<-rbind(c("DBSCHEMA","DO_DB"),
@@ -53,6 +76,7 @@ map.counts<-rbind(c("TERM", nrow(DOTERM)),
 
 map.counts <- as.data.frame(map.counts)
 colnames(map.counts) <- c("map_name","count")
+# dbWriteTable(conn = db, "map.counts", map.counts, row.names=FALSE)
 dbWriteTable(conn = db, "map_counts", map.counts, row.names=FALSE)
 
 dbListTables(db)
