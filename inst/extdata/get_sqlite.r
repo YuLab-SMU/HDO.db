@@ -21,7 +21,17 @@ colnames(doterm) <- c("do_id", "Term")
 DOTERM <- doterm
 dbWriteTable(conn = db, "do_term", DOTERM, row.names=FALSE, overwrite = TRUE)
 
+## ALIAS
+alias <- doobo$alias
+colnames(alias) <- c("do_id", "alias")
+ALIAS <- alias
+dbWriteTable(conn = db, "do_alias", ALIAS, row.names=FALSE, overwrite = TRUE)
 
+## SYNONYM
+synonym <- doobo$synonym
+colnames(synonym) <- c("do_id", "synonym")
+SYNONYM <- synonym
+dbWriteTable(conn = db, "do_synonym", SYNONYM, row.names=FALSE, overwrite = TRUE)
 
 ## DOPARENTS
 DOPARENTS <- doobo$rel
