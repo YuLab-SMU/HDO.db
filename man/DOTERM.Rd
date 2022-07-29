@@ -5,12 +5,9 @@
   This data set gives mappings between DO identifiers and their respective terms.
 }
 \details{
-  Each DO identifier is mapped to a \code{DOTerms} object that has 4 slots:
-   DOID: DO Identifier;
-   Term: The term for that DO id;
-   Secondary: Secondary terms that have been merged into this term;
-   Synonym: other  ontology terms that are considered to be synonymous to the primary
-      term attached to the DO id
+  Each DO identifier is mapped to a \code{DOTerms} object that has 2 slots:
+   do_id: DO Identifier;
+   Term: The term for that DO id
  
   
   Mappings were based on data provided by: Disease Ontology

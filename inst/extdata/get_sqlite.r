@@ -21,6 +21,12 @@ colnames(doterm) <- c("do_id", "Term")
 DOTERM <- doterm
 dbWriteTable(conn = db, "do_term", DOTERM, row.names=FALSE, overwrite = TRUE)
 
+######
+# dbListTables(db)
+# dbListFields(conn = db, "do_term")
+# dbReadTable(conn = db,"do_term")
+######
+
 ## ALIAS
 alias <- doobo$alias
 colnames(alias) <- c("do_id", "alias")
