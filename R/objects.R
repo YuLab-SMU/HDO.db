@@ -38,6 +38,28 @@ DO_DB_AnnDbBimap_seeds <- list(
                 Rcolname="Term"
             )
         )
+    ),
+    list(
+        objName="ALIAS",
+       	Class="AnnDbBimap",
+        L2Rchain=list(
+            list(
+                tablename="do_alias",
+                Lcolname="do_id",
+                Rcolname="alias"
+            )
+        )
+    ),
+    list(
+        objName="SYNONYM",
+       	Class="AnnDbBimap",
+        L2Rchain=list(
+            list(
+                tablename="do_synonym",
+                Lcolname="do_id",
+                Rcolname="synonym"
+            )
+        )
     )
 )
 
