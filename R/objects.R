@@ -15,7 +15,7 @@ DO_DB_AnnDbBimap_seeds <- list(
             )
         )
     ),
-    
+
     list(
         objName="ANCESTOR",
         Class="AnnDbBimap",
@@ -24,13 +24,13 @@ DO_DB_AnnDbBimap_seeds <- list(
                 tablename="do_ancestor",
                 Lcolname="doid",
                 Rcolname="ancestor"
-            )  
+            )
         )
     ),
-   
+
     list(
         objName="TERM",
-       	Class="AnnDbBimap",
+        Class="AnnDbBimap",
         L2Rchain=list(
             list(
                 tablename="do_term",
@@ -41,7 +41,7 @@ DO_DB_AnnDbBimap_seeds <- list(
     ),
     list(
         objName="ALIAS",
-       	Class="AnnDbBimap",
+        Class="AnnDbBimap",
         L2Rchain=list(
             list(
                 tablename="do_alias",
@@ -52,7 +52,7 @@ DO_DB_AnnDbBimap_seeds <- list(
     ),
     list(
         objName="SYNONYM",
-       	Class="AnnDbBimap",
+        Class="AnnDbBimap",
         L2Rchain=list(
             list(
                 tablename="do_synonym",
@@ -66,7 +66,7 @@ DO_DB_AnnDbBimap_seeds <- list(
 createAnnObjs.DO_DB <- function(prefix, objTarget, dbconn, datacache)
 {
     #Now skip here
-    #checkDBSCHEMA(dbconn, "DO_DB") 
+    #checkDBSCHEMA(dbconn, "DO_DB")
 
     ## AnnDbBimap objects
     seed0 <- list(
@@ -80,12 +80,13 @@ createAnnObjs.DO_DB <- function(prefix, objTarget, dbconn, datacache)
     ann_objs$CHILDREN <- revmap(ann_objs$PARENTS, objName = "CHILDREN")
     ann_objs$OFFSPRING <- revmap(ann_objs$ANCESTOR, objName = "OFFSPRING")
 
-    
-    ## 1 special map that is not an AnnDbBimap object (just a named integer vector)
+
+    ## 1 special map that is not an AnnDbBimap object
+    ## (just a named integer vector)
     #ann_objs$MAPCOUNTS <- createMAPCOUNTS(dbconn, prefix)
     ann_objs$MAPCOUNTS <- createMAPCOUNTS(dbconn, prefix)
 
-    #prefixAnnObjNames(ann_objs, prefix)	
+    #prefixAnnObjNames(ann_objs, prefix)
     prefixAnnObjNames(ann_objs, prefix)
 }
 

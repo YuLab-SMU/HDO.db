@@ -1,13 +1,26 @@
 Package: HDO.db
 Type: Package
-Title: A set of annotation maps describing the entire human disease ontology
+Title: A set of annotation maps describing the entire Human Disease Ontology
 Version: 0.99.0
 Authors@R: person(given = "Erqiang", family = "Hu", email = "13766876214@163.com", role  = c("aut", "cre"))
-Description: A set of annotation maps describing the entire Disease Ontology assembled using data from DO.
+Description: A set of annotation maps describing the entire Human Disease 
+    Ontology assembled using data from DO.
+    Its annotation data comes from 
+    https://github.com/DiseaseOntology/HumanDiseaseOntology/tree/main/src/ontology.
 License: Artistic-2.0
+BugReports: https://github.com/GuangchuangYu/HDO.db/issues
+biocViews: AnnotationData, FunctionalAnnotation
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 RoxygenNote: 7.2.1
+Depends:
+    R (>= 4.1.0)
 Imports: 
     AnnotationDbi,
     methods
+Suggests: 
+    rmarkdown,
+    knitr,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3

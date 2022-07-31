@@ -1,0 +1,33 @@
+---
+title: "HDO_vignette"
+output: rmarkdown::html_vignette
+vignette: >
+    %\VignetteIndexEntry{HDO_vignette}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+```{r setup}
+library(HDO.db)
+```
+
+
+```{r}
+sessionInfo()
+ls("package:HDO.db")
+library(AnnotationDbi)
+# get ANCESTOR
+ANCESTOR <- AnnotationDbi::as.list(HDO.db::DOANCESTOR)
+# get OFFSPRING
+OFFSPRING <- AnnotationDbi::as.list(HDO.db::DOOFFSPRING)
+
+# get DO terms
+DOTERM <- AnnotationDbi::toTable(HDO.db::DOTERM)
+```
