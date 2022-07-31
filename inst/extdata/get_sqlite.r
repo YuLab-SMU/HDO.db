@@ -1,4 +1,4 @@
-packagedir <- "./DOyulab.db"
+packagedir <- "./HDO.db"
 sqlite_path <- paste(packagedir, sep=.Platform$file.sep, "inst", "extdata")
 if(!dir.exists(sqlite_path)){dir.create(sqlite_path,recursive = TRUE)}
 dbfile <- file.path(sqlite_path, "DO.sqlite")

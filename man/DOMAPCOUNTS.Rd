@@ -3,11 +3,11 @@
 \alias{DOMAPCOUNTS}
 
 
-\title{Number of mapped keys for the maps in package DOyulab.db}
+\title{Number of mapped keys for the maps in package HDO.db}
 
 \description{
   DOMAPCOUNTS provides the "map count" (i.e. the
-  count of mapped keys) for each map in package DOyulab.db.
+  count of mapped keys) for each map in package HDO.db.
 }
 
 \details{  
