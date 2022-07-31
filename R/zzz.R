@@ -6,7 +6,7 @@ DO_dbconn <- function() dbconn(datacache)
 DO_dbfile <- function() dbfile(datacache)
 DO_dbschema <- function(file="", show.indices=FALSE) dbschema(datacache, file=file, show.indices=show.indices)
 DO_dbInfo <- function() dbInfo(datacache)
-# DO_dbschema <- function(){writeLines(strwrap(readLines(system.file("DBschemas","schemas_1.0","DO_DB.sql", package ="DOyulab.db")),indent=2, exdent=4))}
+# DO_dbschema <- function(){writeLines(strwrap(readLines(system.file("DBschemas","schemas_1.0","DO_DB.sql", package ="HDO.db")),indent=2, exdent=4))}
 
 .onLoad <- function(libname, pkgname)
 {
@@ -18,7 +18,7 @@ DO_dbInfo <- function() dbInfo(datacache)
     # ann_objs <- createAnnObjs.SchemaChoice("DO_DB", "DO", "DO", dbconn, datacache)
     ann_objs <- createAnnObjs.DO_DB("DO", "DO", dbconn, datacache)
     mergeToNamespaceAndExport(ann_objs, pkgname)   
-    # packageStartupMessage(AnnotationDbi:::annoStartupMessages("DOyulab.db"))   
+    # packageStartupMessage(AnnotationDbi:::annoStartupMessages("HDO.db"))   
 }
 
 .onUnload <- function(libpath)
