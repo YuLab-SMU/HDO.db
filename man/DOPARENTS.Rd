@@ -2,25 +2,28 @@
 \alias{DOPARENTS}
 \title{Annotation of DO Identifiers to their Parents} 
 \description{
-  This data set describes associations between DO
-  terms and their direct parent  terms, based on the directed acyclic
-  graph (DAG) defined by the Disease Ontology Consortium. The format is an R
-  object mapping the DO  terms to all direct parent terms, where a
-  direct parent term is a more general DO term that immediately precedes
-  the given DO term in the DAG.
+    This data set describes associations between DO
+    terms and their direct parent    terms, based on the directed acyclic
+    graph (DAG) defined by the Disease Ontology Consortium. The format is an R
+    object mapping the DO    terms to all direct parent terms, where a
+    direct parent term is a more general DO term that immediately precedes
+    the given DO term in the DAG.
 }
 \details{
-  Each DO  term is mapped to a named vector of DO  terms. The name
-  associated with the parent term will be either \emph{isa}, \emph{partof},
-  where \emph{isa} indicates that the child term is a more specific version
-  of the parent, and  \emph{partof} indicate that the
-  child term is a part of the parent. 
+    Each DO    term is mapped to a named vector of DO    terms. The name
+    associated with the parent term will be either \emph{isa}, \emph{partof},
+    where \emph{isa} indicates that the child term is a more specific version
+    of the parent, and    \emph{partof} indicate that the
+    child term is a part of the parent. 
 
  
-  Mappings were based on data provided by: Disease Ontology
-  With a date stamp from the source of: 20150323 (sub_version 2806)
+    Mappings were based on data provided by: Disease Ontology
+    With a date stamp from the source of: 20150323 (sub_version 2806)
 
 
+}
+\examples{
+    xx <- as.list(DOPARENTS)
 }
 \references{
 \url{http://do-wiki.nubic.northwestern.edu/index.php/Main_Page} 
