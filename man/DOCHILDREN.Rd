@@ -12,7 +12,7 @@ This data set describes associations between DO
 \details{
     Each DO term is mapped to a vector of children DO terms.
     Mappings were based on data provided by: Disease Ontology
-    With a date stamp from the source of: 20150323 (sub_version 2806)
+    With a date stamp from the source of: 20220706
 
 
 }

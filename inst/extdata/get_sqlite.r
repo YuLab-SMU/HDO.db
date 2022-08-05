@@ -69,7 +69,7 @@ colnames(DOANCESTOR) <- c("doid", "ancestor")
 dbWriteTable(conn = db, "do_ancestor", DOANCESTOR, row.names=FALSE)
 
 
-metadata <- metadata<-rbind(c("DBSCHEMA","DO_DB"),
+metadata <-rbind(c("DBSCHEMA","DO_DB"),
         c("DBSCHEMAVERSION","2.0"),
         c("DOSOURCENAME","Disease Ontology"),
         c("DOSOURCURL","https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo"),
@@ -77,7 +77,7 @@ metadata <- metadata<-rbind(c("DBSCHEMA","DO_DB"),
         #c("DOVERSION","2806"))	
 
 metadata <- as.data.frame(metadata)
-colnames(metadata) <- c("name", "value") #makeAnnDbPkg规定的
+colnames(metadata) <- c("name", "value") 
 dbWriteTable(conn = db, "metadata", metadata, row.names=FALSE, overwrite = TRUE)
 
 
