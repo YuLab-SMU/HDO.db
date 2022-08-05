@@ -1,5 +1,5 @@
-\name{DOTERM}
-\alias{DOTERM}
+\name{DOmetadata}
+\alias{DOmetadata}
 \title{Annotation of DO Identifiers to DO Terms}
 \description{
     This data set gives mappings between DO identifiers and their
@@ -7,19 +7,20 @@
 }
 \details{
     Each DO identifier is mapped to a \code{DOTerms} object that has 2 slots:
-    do_id: DO Identifier;
-    Term: The term for that DO id
+    name: DO name;
+    value: The value
 
 
     Mappings were based on data provided by: Disease Ontology
-    With a date stamp from the source of: 220220706
+    With a date stamp from the source of: 20220706
 
 
 }
 
 \examples{
-    # Convert the object to a list
-    xx <- as.list(DOTERM)
+    # Convert the object to a data.frame
+    library(AnnotationDbi)
+    xx <- toTable(DOmetadata)
 }
 \references{
 \url{http://do-wiki.nubic.northwestern.edu/index.php/Main_Page}

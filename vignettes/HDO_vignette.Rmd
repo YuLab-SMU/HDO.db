@@ -23,11 +23,37 @@ library(HDO.db)
 sessionInfo()
 ls("package:HDO.db")
 library(AnnotationDbi)
-# get ANCESTOR
-ANCESTOR <- AnnotationDbi::as.list(HDO.db::DOANCESTOR)
-# get OFFSPRING
-OFFSPRING <- AnnotationDbi::as.list(HDO.db::DOOFFSPRING)
+packageVersion("HDO.db")
 
-# get DO terms
-DOTERM <- AnnotationDbi::toTable(HDO.db::DOTERM)
+# show DOMAPCOUNTS
+DOMAPCOUNTS
+
+# show metadata
+toTable(DOmetadata)
+
+
+# convert DOTERM to table
+doterm <- toTable(DOTERM)
+head(doterm)
+
+# convert DOTERM to list
+dotermlist <- as.list(DOTERM)
+head(dotermlist)
+
+
+
+# get ANCESTOR
+
+anc_table <- toTable(DOANCESTOR)
+anc_list <- AnnotationDbi::as.list(DOANCESTOR)
+head(anc_table)
+# get ancestor of "DOID:0001816"
+anc_list[["DOID:0001816"]]
+
+# get OFFSPRING
+off_list <- AnnotationDbi::as.list(HDO.db::DOOFFSPRING)
+off_table <- toTable(DOOFFSPRING)
+head(off_table)
+# get offspring of "DOID:0001816"
+off_list[["DOID:0001816"]]
 ```

@@ -60,6 +60,17 @@ DO_DB_AnnDbBimap_seeds <- list(
                 Rcolname="synonym"
             )
         )
+    ),
+    list(
+        objName="metadata",
+        Class="AnnDbBimap",
+        L2Rchain=list(
+            list(
+                tablename="metadata",
+                Lcolname="name",
+                Rcolname="value"
+            )
+        )
     )
 )
 
