@@ -20,6 +20,12 @@
     map.
 }
 
+\examples{
+    # Convert the object to a list
+    xx <- as.list(DOCHILDREN)
+}
+
+
 \seealso{
     \code{\link[AnnotationDbi:Bimap-keys]{mappedkeys}},
     \code{\link[AnnotationDbi:Bimap-keys]{count.mappedkeys}},

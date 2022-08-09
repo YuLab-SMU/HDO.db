@@ -16,7 +16,7 @@
     of the parent, and    \emph{partof} indicate that the
     child term is a part of the parent. 
 
- 
+
     Mappings were based on data provided by: Disease Ontology
     With a date stamp from the source of: 220220706
 
