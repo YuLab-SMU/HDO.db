@@ -1,9 +1,9 @@
 ---
 title: "HDO.db: Human Disease Ontology Annotation Package"
 author: 
--  name: Erqiang Hu
+    name: Erqiang Hu
     email: 13766876214@163.com
-    affiliation: Department of Bioinformatics, School of Basic Medical Sciences, Southern Medical University
+    affiliation: Southern Medical University
 date: "`r Sys.Date()`"
 biblio-style: apalike
 output:
