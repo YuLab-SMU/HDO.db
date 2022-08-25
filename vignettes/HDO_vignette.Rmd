@@ -1,26 +1,18 @@
 ---
-title: "HDO.db: Human Disease Ontology Annotation Package"
-author: 
-    name: Erqiang Hu
-    email: 13766876214@163.com
-    affiliation: Southern Medical University
-date: "`r Sys.Date()`"
-biblio-style: apalike
-output:
-    prettydoc::html_pretty:
-        toc: true
-        theme: cayman
-        highlight: github
-    pdf_document:
-        toc: true
+title: "HDO_vignette"
+output: rmarkdown::html_vignette
 vignette: >
-    %\VignetteIndexEntry{HDO.db}
-    %\VignettePackage{HDO.db}
-    % \VignetteEngine{knitr::rmarkdown}
-    % \usepackage[utf8]{inputenc}
-    %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{HDO_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 
 
@@ -65,103 +57,120 @@ packageVersion("HDO.db")
 
 You can use `help` function to get their documents: `help(DOOFFSPRING)`
 ```{r}
-toTable(DOmetadata)
-DOMAPCOUNTS
+toTable(HDOmetadata)
+HDOMAPCOUNTS
 ```
 
 
 ## Fetch whole DO terms
 
-In HDO.db, `DOTERM` represet the whole DO terms and their names. The users can 
-also get their aliases and synonyms from `DOALIAS` and `DOSYNONYM`, 
+In HDO.db, `HDOTERM` represet the whole DO terms and their names. The users can 
+also get their aliases and synonyms from `HDOALIAS` and `HDOSYNONYM`, 
 respectively.
 
-convert DOTERM to table
+convert HDOTERM to table
 ```{r}
-doterm <- toTable(DOTERM)
+doterm <- toTable(HDOTERM)
 head(doterm)
 ```
 
 
-convert DOTERM to list
+convert HDOTERM to list
 ```{r}
-dotermlist <- as.list(DOTERM)
+dotermlist <- as.list(HDOTERM)
 head(dotermlist)
 ```
 
 get alias of `DOID:0001816`
 ```{r}
-doalias <- as.list(DOALIAS)
+doalias <- as.list(HDOALIAS)
 doalias[['DOID:0001816']]
 ```
 
 get synonym of `DOID:0001816`
 ```{r}
-dosynonym <- as.list(DOSYNONYM)
+dosynonym <- as.list(HDOSYNONYM)
 dosynonym[['DOID:0001816']]
 ```
 
 
 ## Fetch the relationship between DO terms
 Similar to `DO.db`, we provide four Bimap objects to represent relationship
-between DO terms: DOANCESTOR,DOPARENTS,DOOFFSPRING, and DOCHILDREN.
+between DO terms: HDOANCESTOR,HDOPARENTS,HDOOFFSPRING, and HDOCHILDREN.
 
-### DOANCESTOR
-DOANCESTOR describes the association between DO terms and their ancestral terms 
-based on a directed acyclic graph (DAG) defined by the Disease Ontology.
+### HDOANCESTOR
+HDOANCESTOR describes the association between DO terms and their ancestral 
+terms based on a directed acyclic graph (DAG) defined by the Disease Ontology.
 We can use `toTable` function in `AnnotationDbi` package to get a two-column 
 data.frame: the first column means the DO term ids, and the second column means 
 their ancestor terms.
 ```{r}
-anc_table <- toTable(DOANCESTOR)
+anc_table <- toTable(HDOANCESTOR)
 head(anc_table)
 ```
 
 get ancestor of "DOID:0001816"
 ```{r}
-anc_list <- AnnotationDbi::as.list(DOANCESTOR)
+anc_list <- AnnotationDbi::as.list(HDOANCESTOR)
 anc_list[["DOID:0001816"]]
 ```
 
 
-### DOPARENTS
-DOPARENTS describes the association between DO terms and their direct parent 
+### HDOPARENTS
+HDOPARENTS describes the association between DO terms and their direct parent 
 terms based on DAG. We can use `toTable` function in `AnnotationDbi` package to 
 get a two-column data.frame: the first column means the DO term ids, and the 
 second column means their parent terms.
 ```{r}
-parent_table <- toTable(DOPARENTS)
+parent_table <- toTable(HDOPARENTS)
 head(parent_table)
 ```
 
 
 get parent term of "DOID:0001816"
 ```{r}
-parent_list <- AnnotationDbi::as.list(DOPARENTS)
+parent_list <- AnnotationDbi::as.list(HDOPARENTS)
 parent_list[["DOID:0001816"]]
 ```
 
-###  DOOFFSPRING
-DOPARENTS describes the association between DO terms and their offspring  terms 
-based on DAG. it's the exact opposite of `DOANCESTOR`, 
+###  HDOOFFSPRING
+HDOPARENTS describes the association between DO terms and their offspring  
+terms based on DAG. it's the exact opposite of `HDOANCESTOR`, 
 whose usage is similar to it.
 
 get offspring of "DOID:0001816"
 ```{r}
-off_list <- AnnotationDbi::as.list(HDO.db::DOOFFSPRING)
+off_list <- AnnotationDbi::as.list(HDO.db::HDOOFFSPRING)
 off_list[["DOID:0001816"]]
 ```
 
-### DOCHILDREN
-DOCHILDREN describes the association between DO terms and their direct children 
-terms based on DAG. it's the exact opposite of `DOPARENTS`, 
+### HDOCHILDREN
+HDOCHILDREN describes the association between DO terms and their direct 
+children terms based on DAG. it's the exact opposite of `HDOPARENTS`, 
 whose usage is similar to it.
 
 get children of "DOID:4"
 ```{r}
-child_list <- AnnotationDbi::as.list(HDO.db::DOCHILDREN)
+child_list <- AnnotationDbi::as.list(HDO.db::HDOCHILDREN)
 child_list[["DOID:4"]]
 ```
+
+The HDO.db support the `select()`, `keys()`, `keytypes()`,
+and `columns` interface.
+```{r}
+columns(HDO.db)
+## use doid keys
+dokeys <- head(keys(HDO.db))
+res <- select(x = HDO.db, keys = dokeys, keytype = "doid", 
+    columns = c("offspring", "term", "parent"))
+head(res)
+## use term keys
+dokeys <- head(keys(HDO.db, keytype = "term"))
+res <- select(x = HDO.db, keys = dokeys, keytype = "term", 
+    columns = c("offspring", "doid", "parent"))   
+head(res)
+```
+
 
 ## Semantic similarity analysis
 Please go to 
