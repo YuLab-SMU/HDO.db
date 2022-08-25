@@ -1,3 +1,4 @@
+importFrom(utils, getFromNamespace)
 import(methods)
 import(AnnotationDbi)
 
@@ -5,10 +6,13 @@ import(AnnotationDbi)
 ### created at load time are dynamically exported (refer to R/zzz.R for
 ### the details).
 export(
-    DO,
-    DO_dbconn,
-    DO_dbfile,
-    DO_dbschema,
-    DO_dbInfo
+    HDO,
+    HDO_dbconn,
+    HDO_dbfile,
+    HDO_dbschema,
+    HDO_dbInfo,
+    columns,
+    keytypes,
+    select,
+    keys
 )
-

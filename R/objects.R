@@ -3,15 +3,27 @@ createMAPCOUNTS <- getFromNamespace('createMAPCOUNTS','AnnotationDbi')
 prefixAnnObjNames <- getFromNamespace('prefixAnnObjNames','AnnotationDbi')
 
 
-DO_DB_AnnDbBimap_seeds <- list(
+HDO_DB_AnnDbBimap_seeds <- list(
     list(
         objName="PARENTS",
         Class="AnnDbBimap",
         L2Rchain=list(
             list(
-                tablename="do_parents",
+                tablename="do_parent",
                 Lcolname="doid",
                 Rcolname="parent"
+            )
+        )
+    ),
+
+    list(
+        objName="CHILDREN",
+        Class="AnnDbBimap",
+        L2Rchain=list(
+            list(
+                tablename="do_children",
+                Lcolname="doid",
+                Rcolname="children"
             )
         )
     ),
@@ -29,13 +41,25 @@ DO_DB_AnnDbBimap_seeds <- list(
     ),
 
     list(
+        objName="OFFSPRING",
+        Class="AnnDbBimap",
+        L2Rchain=list(
+            list(
+                tablename="do_offspring",
+                Lcolname="doid",
+                Rcolname="offspring"
+            )
+        )
+    ),
+
+    list(
         objName="TERM",
         Class="AnnDbBimap",
         L2Rchain=list(
             list(
                 tablename="do_term",
-                Lcolname="do_id",
-                Rcolname="Term"
+                Lcolname="doid",
+                Rcolname="term"
             )
         )
     ),
@@ -45,7 +69,7 @@ DO_DB_AnnDbBimap_seeds <- list(
         L2Rchain=list(
             list(
                 tablename="do_alias",
-                Lcolname="do_id",
+                Lcolname="doid",
                 Rcolname="alias"
             )
         )
@@ -56,7 +80,7 @@ DO_DB_AnnDbBimap_seeds <- list(
         L2Rchain=list(
             list(
                 tablename="do_synonym",
-                Lcolname="do_id",
+                Lcolname="doid",
                 Rcolname="synonym"
             )
         )
@@ -74,7 +98,7 @@ DO_DB_AnnDbBimap_seeds <- list(
     )
 )
 
-createAnnObjs.DO_DB <- function(prefix, objTarget, dbconn, datacache)
+createAnnObjs.HDO_DB <- function(prefix, objTarget, dbconn, datacache)
 {
     #Now skip here
     #checkDBSCHEMA(dbconn, "DO_DB")
@@ -85,11 +109,11 @@ createAnnObjs.DO_DB <- function(prefix, objTarget, dbconn, datacache)
         datacache=datacache
     )
     #ann_objs <- createAnnDbBimaps(DO_DB_AnnDbBimap_seeds, seed0)
-    ann_objs <- createAnnDbBimaps(DO_DB_AnnDbBimap_seeds, seed0)
+    ann_objs <- createAnnDbBimaps(HDO_DB_AnnDbBimap_seeds, seed0)
 
     ## Reverse maps
-    ann_objs$CHILDREN <- revmap(ann_objs$PARENTS, objName = "CHILDREN")
-    ann_objs$OFFSPRING <- revmap(ann_objs$ANCESTOR, objName = "OFFSPRING")
+    # ann_objs$CHILDREN <- revmap(ann_objs$PARENTS, objName = "CHILDREN")
+    # ann_objs$OFFSPRING <- revmap(ann_objs$ANCESTOR, objName = "OFFSPRING")
 
 
     ## 1 special map that is not an AnnDbBimap object

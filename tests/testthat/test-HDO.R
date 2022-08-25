@@ -1,4 +1,4 @@
-test_that("DOANCESTOR", {
-    aa <- length(as.list(DOANCESTOR))
+test_that("HDOANCESTOR", {
+    aa <- length(as.list(HDOANCESTOR))
     expect_true(aa > 0)
 })
