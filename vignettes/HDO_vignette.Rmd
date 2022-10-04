@@ -29,7 +29,7 @@ products with disease perspectives, and is essential for supporting functional
 genomics in disease context. Accurate disease descriptions can discover new 
 relationships between genes and disease, and new functions for previous 
 uncharacteried genes and alleles.We have developed the 
-[DOSE](https://bioconductor.org/packages/DOSE/)` package for semantic 
+[DOSE](https://bioconductor.org/packages/DOSE/) package for semantic 
 similarity analysis and disease enrichment analysis, and `DOSE` import an 
 Bioconductor package 'DO.db' to get the relationship(such as parent and child)
 between DO terms. But `DO.db`  hasn't been updated for years, and a lot of 

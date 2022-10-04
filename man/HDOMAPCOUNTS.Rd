@@ -3,11 +3,11 @@
 \alias{HDOMAPCOUNTS}
 
 
-\title{Number of mapped keys for the maps in package HHDO.db}
+\title{Number of mapped keys for the maps in package HDO.db}
 
 \description{
     HDOMAPCOUNTS provides the "map count" (i.e. the
-    count of mapped keys) for each map in package HHDO.db.
+    count of mapped keys) for each map in package HDO.db.
 }
 
 \details{    

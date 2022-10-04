@@ -88,5 +88,4 @@ setMethod("columns", "HDODb",
         c("doid","term", "alias", "synonym", "parent", "children",
             "ancestor", "offspring")
     }
-
 )
