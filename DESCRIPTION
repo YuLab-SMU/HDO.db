@@ -1,8 +1,11 @@
 Package: HDO.db
 Type: Package
 Title: A set of annotation maps describing the entire Human Disease Ontology
-Version: 0.99.0.991
-Authors@R: person(given = "Erqiang", family = "Hu", email = "13766876214@163.com", role  = c("aut", "cre"))
+Version: 0.99.0.992
+Authors@R: c(
+      person(given = "Erqiang", family = "Hu", email = "13766876214@163.com", role  = c("aut", "cre")),
+      person("Guangchuang", "Yu", email = "guangchuangyu@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-6485-8781"))
+      )
 Description: A set of annotation maps describing the entire Human Disease 
     Ontology assembled using data from DO.
     Its annotation data comes from 
