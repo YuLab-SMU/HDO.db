@@ -1,3 +1,4 @@
+## Author: Guangchuang Yu
 parse_do <- function(obofile) {
     x = readLines(obofile)
 

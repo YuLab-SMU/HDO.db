@@ -1,7 +1,8 @@
-packagedir <- "./HDO.db"
+setwd("E:\\enrichplot_export\\DOSE数据更新\\create_dodb\\2022_7_15数据更新")
+packagedir <- getwd()
 sqlite_path <- paste(packagedir, sep=.Platform$file.sep, "inst", "extdata")
 if(!dir.exists(sqlite_path)){dir.create(sqlite_path,recursive = TRUE)}
-dbfile <- file.path(sqlite_path, "DO.sqlite")
+dbfile <- file.path(sqlite_path, "HDO.sqlite")
 unlink(dbfile)
 
 ###################################################
@@ -13,13 +14,15 @@ drv <- dbDriver("SQLite")
 db <- dbConnect(drv, dbname=dbfile)
 ## dbDisconnect(db)
 
-
+source("E:\\enrichplot_export\\HDO.db\\inst\\extdata\\parse-obo.R")
+library(dplyr)
 ## DOTERM
 doobo <- parse_do("HumanDO.obo")
+
 doterm <- doobo$doinfo[, c(1,2)]
-colnames(doterm) <- c("do_id", "Term")
-DOTERM <- doterm
-dbWriteTable(conn = db, "do_term", DOTERM, row.names=FALSE, overwrite = TRUE)
+colnames(doterm) <- c("doid", "term")
+HDOTERM <- doterm
+dbWriteTable(conn = db, "do_term", HDOTERM, row.names=FALSE, overwrite = TRUE)
 
 ######
 # dbListTables(db)
@@ -29,30 +32,37 @@ dbWriteTable(conn = db, "do_term", DOTERM, row.names=FALSE, overwrite = TRUE)
 
 ## ALIAS
 alias <- doobo$alias
-colnames(alias) <- c("do_id", "alias")
+colnames(alias) <- c("doid", "alias")
 ALIAS <- alias
 dbWriteTable(conn = db, "do_alias", ALIAS, row.names=FALSE, overwrite = TRUE)
 
 ## SYNONYM
 synonym <- doobo$synonym
-colnames(synonym) <- c("do_id", "synonym")
+colnames(synonym) <- c("doid", "synonym")
 SYNONYM <- synonym
 dbWriteTable(conn = db, "do_synonym", SYNONYM, row.names=FALSE, overwrite = TRUE)
 
 ## DOPARENTS
-DOPARENTS <- doobo$rel
-colnames(DOPARENTS) <- c("doid", "parent")
-dbWriteTable(conn = db, "do_parents", DOPARENTS, row.names=FALSE)
+HDOPARENTS <- doobo$rel
+colnames(HDOPARENTS) <- c("doid", "parent")
+dbWriteTable(conn = db, "do_parent", HDOPARENTS, row.names=FALSE)
+
+
+## DOCHILDREN
+HDOCHILDREN <- doobo$rel[, c(2,1)]
+HDOCHILDREN <- HDOCHILDREN[order(HDOCHILDREN[, 1]), ]
+colnames(HDOCHILDREN) <- c("doid", "children")
+dbWriteTable(conn = db, "do_children", HDOCHILDREN, row.names=FALSE)
 
 ## DOANCESTOR
-ancestor_list <- split(DOPARENTS[, 2], DOPARENTS[, 1])
+ancestor_list <- split(HDOPARENTS[, 2], HDOPARENTS[, 1])
 getAncestor <- function(id) {
-    ans_temp <- which(DOPARENTS[, 1] %in% ancestor_list[[id]])
-    ids <- DOPARENTS[ans_temp, 2]
+    ans_temp <- which(HDOPARENTS[, 1] %in% ancestor_list[[id]])
+    ids <- HDOPARENTS[ans_temp, 2]
     content <- c(ancestor_list[[id]], ids)
     while(!all(is.na(ids))) {
-        ans_temp <- which(DOPARENTS[, 1] %in% ids)
-        ids <- DOPARENTS[ans_temp, 2]
+        ans_temp <- which(HDOPARENTS[, 1] %in% ids)
+        ids <- HDOPARENTS[ans_temp, 2]
         content <- c(content, ids)
     }
     content[!is.na(content)]
@@ -64,16 +74,23 @@ for (id in names(ancestor_list)) {
 ancestordf <- stack(ancestor_list)[, c(2, 1)]
 ancestordf[, 1] <- as.character(ancestordf[, 1])
 ancestordf <- unique(ancestordf)
-DOANCESTOR <- ancestordf
-colnames(DOANCESTOR) <- c("doid", "ancestor")
-dbWriteTable(conn = db, "do_ancestor", DOANCESTOR, row.names=FALSE)
+HDOANCESTOR <- ancestordf
+colnames(HDOANCESTOR) <- c("doid", "ancestor")
+dbWriteTable(conn = db, "do_ancestor", HDOANCESTOR, row.names=FALSE)
 
 
-metadata <-rbind(c("DBSCHEMA","DO_DB"),
-        c("DBSCHEMAVERSION","2.0"),
-        c("DOSOURCENAME","Disease Ontology"),
-        c("DOSOURCURL","https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo"),
-        c("DOSOURCEDATE","20220706"))#,
+# DOOFFSPRING
+HDOOFFSPRING <- ancestordf[, c(2, 1)]
+HDOOFFSPRING <- HDOOFFSPRING[order(HDOOFFSPRING[, 1]), ]
+colnames(HDOOFFSPRING) <- c("doid", "offspring")
+dbWriteTable(conn = db, "do_offspring", HDOOFFSPRING, row.names=FALSE)
+
+metadata <-rbind(c("DBSCHEMA","HDO_DB"),
+        c("DBSCHEMAVERSION","1.0"),
+        c("HDOSOURCENAME","Disease Ontology"),
+        c("HDOSOURCURL","https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo"),
+        c("HDOSOURCEDATE","20220706"),
+        c("Db type", "HDODb"))
         #c("DOVERSION","2806"))	
 
 metadata <- as.data.frame(metadata)
@@ -82,18 +99,18 @@ dbWriteTable(conn = db, "metadata", metadata, row.names=FALSE, overwrite = TRUE)
 
 
 
-map.counts<-rbind(c("TERM", nrow(DOTERM)),
+map.counts<-rbind(c("TERM", nrow(HDOTERM)),
         # c("OBSOLETE","$obsolete_counts"),
-        c("CHILDREN", nrow(DOPARENTS)),
-        c("PARENTS", nrow(DOPARENTS)),
-        c("ANCESTOR", nrow(DOANCESTOR)),
-        c("OFFSPRING", nrow(DOANCESTOR)))
+        c("CHILDREN", nrow(HDOCHILDREN)),
+        c("PARENTS", nrow(HDOPARENTS)),
+        c("ANCESTOR", nrow(HDOANCESTOR)),
+        c("OFFSPRING", nrow(HDOOFFSPRING)))
 
 
 map.counts <- as.data.frame(map.counts)
 colnames(map.counts) <- c("map_name","count")
 # dbWriteTable(conn = db, "map.counts", map.counts, row.names=FALSE)
-dbWriteTable(conn = db, "map_counts", map.counts, row.names=FALSE)
+dbWriteTable(conn = db, "map_counts", map.counts, row.names=FALSE, overwrite = TRUE)
 
 dbListTables(db)
 dbListFields(conn = db, "metadata")
@@ -101,7 +118,7 @@ dbReadTable(conn = db,"metadata")
 
 
 map.metadata <- rbind(c("TERM", "Disease Ontology", "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo","20220706"),
-            c("OBSOLETE", "Disease Ontology", "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo","20220706"),
+            # c("OBSOLETE", "Disease Ontology", "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo","20220706"),
             c("CHILDREN", "Disease Ontology", "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo","20220706"),
             c("PARENTS", "Disease Ontology", "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo","20220706"),
             c("ANCESTOR", "Disease Ontology", "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo","20220706"),
